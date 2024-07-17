@@ -46,20 +46,20 @@
   connection: local
   gather_facts: False
 
-  vars:
-    team: "myteam"
-    security_group: "my-security-group"
-    ami_type: "latest-ami-id"
-    vpc_subnet_id: "subnet-abc123"
-    instance_role: "my-instance-role"
-    instance_type: "t2.micro"
-    instance_name: "my-instance"
-    created_by: "MyName"
-    Owner: "MyTeam"
-    App_Name: "MyApp"
-    Cost_Center: "12345"
-    Business_Unit: "MyBusiness"
-    root_volume_size: 8
+  # vars:
+  #   team: "myteam"
+  #   security_group: "my-security-group"
+  #   ami_type: "latest-ami-id"
+  #   vpc_subnet_id: "subnet-abc123"
+  #   instance_role: "my-instance-role"
+  #   instance_type: "t2.micro"
+  #   instance_name: "my-instance"
+  #   created_by: "MyName"
+  #   Owner: "MyTeam"
+  #   App_Name: "MyApp"
+  #   Cost_Center: "12345"
+  #   Business_Unit: "MyBusiness"
+  #   root_volume_size: 8
 
   tasks:
   - name: Debug team
