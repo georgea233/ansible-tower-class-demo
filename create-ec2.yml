@@ -1,65 +1,6 @@
-# ---
-# - hosts: localhost
-#   connection: local
-#   gather_facts: False
-
-#   tasks:
-#   - name: Create EC2
-#     ec2_instance:
-#       key_name: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/keyname', region='us-east-2') }}"
-#       security_group: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ security_group }}', region='us-east-2') }}"
-#       image_id: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ ami_type }}', region='us-east-2') }}"
-#       instance_type: "{{ instance_type }}"
-#       region: "us-east-2"
-#       vpc_subnet_id: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ vpc_subnet_id }}', region='us-east-2') }}"
-#       instance_role: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ instance_role }}', region='us-east-2') }}"
-#       wait: true
-#       volumes:
-#         - device_name: /dev/xvda
-#           ebs:
-#             volume_type: gp2
-#             volume_size: "{{ root_volume_size }}"
-#             delete_on_termination: true
-#             encrypted: true
-#       name: "{{ instance_name }}"
-#       tags:
-#         created_by: "{{ created_by }}"
-#         Owner: "{{ Owner }}"
-#         App_Name: "{{ App_Name }}"
-#         Cost_Center: "{{ Cost_Center }}"
-#         Business_Unit: "{{ Business_Unit }}"
-#       user_data: |
-#         #!/bin/bash
-#         yum update -y
-#         yum install httpd -y
-#         service httpd start
-#         chkconfig httpd on
-#         echo "<html><body><h1>Hello JJTech Team</h1></body></html>" > /var/www/html/index.html
-
-# #  - debug:
-# #      msg: ec2_instance
-# #  - debug:
-# #      msg: "{{ ec2.results[0].instance_ids }}"
-
----
 - hosts: localhost
   connection: local
   gather_facts: False
-
-  # vars:
-  #   team: "myteam"
-  #   security_group: "my-security-group"
-  #   ami_type: "latest-ami-id"
-  #   vpc_subnet_id: "subnet-abc123"
-  #   instance_role: "my-instance-role"
-  #   instance_type: "t2.micro"
-  #   instance_name: "my-instance"
-  #   created_by: "MyName"
-  #   Owner: "MyTeam"
-  #   App_Name: "MyApp"
-  #   Cost_Center: "12345"
-  #   Business_Unit: "MyBusiness"
-  #   root_volume_size: 8
 
   tasks:
   - name: Debug team
@@ -117,7 +58,138 @@
         service httpd start
         chkconfig httpd on
         echo "<html><body><h1>Hello JJTech Team</h1></body></html>" > /var/www/html/index.html
+    register: ec2_result  # Register the result of the task
 
   - name: Output instance details
     debug:
-      msg: "EC2 instance ID is {{ ec2.instance_id }}"
+      msg: "EC2 instance ID is {{ ec2_result.instance_ids[0] }}"
+
+
+
+
+
+
+
+# # ---
+# # - hosts: localhost
+# #   connection: local
+# #   gather_facts: False
+
+# #   tasks:
+# #   - name: Create EC2
+# #     ec2_instance:
+# #       key_name: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/keyname', region='us-east-2') }}"
+# #       security_group: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ security_group }}', region='us-east-2') }}"
+# #       image_id: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ ami_type }}', region='us-east-2') }}"
+# #       instance_type: "{{ instance_type }}"
+# #       region: "us-east-2"
+# #       vpc_subnet_id: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ vpc_subnet_id }}', region='us-east-2') }}"
+# #       instance_role: "{{ lookup('aws_ssm', '/JJTech/{{ team }}/{{ instance_role }}', region='us-east-2') }}"
+# #       wait: true
+# #       volumes:
+# #         - device_name: /dev/xvda
+# #           ebs:
+# #             volume_type: gp2
+# #             volume_size: "{{ root_volume_size }}"
+# #             delete_on_termination: true
+# #             encrypted: true
+# #       name: "{{ instance_name }}"
+# #       tags:
+# #         created_by: "{{ created_by }}"
+# #         Owner: "{{ Owner }}"
+# #         App_Name: "{{ App_Name }}"
+# #         Cost_Center: "{{ Cost_Center }}"
+# #         Business_Unit: "{{ Business_Unit }}"
+# #       user_data: |
+# #         #!/bin/bash
+# #         yum update -y
+# #         yum install httpd -y
+# #         service httpd start
+# #         chkconfig httpd on
+# #         echo "<html><body><h1>Hello JJTech Team</h1></body></html>" > /var/www/html/index.html
+
+# # #  - debug:
+# # #      msg: ec2_instance
+# # #  - debug:
+# # #      msg: "{{ ec2.results[0].instance_ids }}"
+
+# ---
+# - hosts: localhost
+#   connection: local
+#   gather_facts: False
+
+#   # vars:
+#   #   team: "myteam"
+#   #   security_group: "my-security-group"
+#   #   ami_type: "latest-ami-id"
+#   #   vpc_subnet_id: "subnet-abc123"
+#   #   instance_role: "my-instance-role"
+#   #   instance_type: "t2.micro"
+#   #   instance_name: "my-instance"
+#   #   created_by: "MyName"
+#   #   Owner: "MyTeam"
+#   #   App_Name: "MyApp"
+#   #   Cost_Center: "12345"
+#   #   Business_Unit: "MyBusiness"
+#   #   root_volume_size: 8
+
+#   tasks:
+#   - name: Debug team
+#     debug:
+#       msg: "Team: {{ team }}"
+
+#   - name: Debug key_name
+#     debug:
+#       msg: "Key Name: {{ lookup('aws_ssm', '/JJTech/' + team + '/keyname', region='us-east-2') }}"
+
+#   - name: Debug security_group
+#     debug:
+#       msg: "Security Group: {{ lookup('aws_ssm', '/JJTech/' + team + '/' + security_group, region='us-east-2') }}"
+
+#   - name: Debug image_id
+#     debug:
+#       msg: "Image ID: {{ lookup('aws_ssm', '/JJTech/' + team + '/' + ami_type, region='us-east-2') }}"
+
+#   - name: Debug vpc_subnet_id
+#     debug:
+#       msg: "VPC Subnet ID: {{ lookup('aws_ssm', '/JJTech/' + team + '/' + vpc_subnet_id, region='us-east-2') }}"
+
+#   - name: Debug instance_role
+#     debug:
+#       msg: "Instance Role: {{ lookup('aws_ssm', '/JJTech/' + team + '/' + instance_role, region='us-east-2') }}"
+
+#   - name: Create EC2
+#     ec2_instance:
+#       key_name: "{{ lookup('aws_ssm', '/JJTech/' + team + '/keyname', region='us-east-2') }}"
+#       security_group: "{{ lookup('aws_ssm', '/JJTech/' + team + '/' + security_group, region='us-east-2') }}"
+#       image_id: "{{ lookup('aws_ssm', '/JJTech/' + team + '/' + ami_type, region='us-east-2') }}"
+#       instance_type: "{{ instance_type }}"
+#       region: "us-east-2"
+#       vpc_subnet_id: "{{ lookup('aws_ssm', '/JJTech/' + team + '/' + vpc_subnet_id, region='us-east-2') }}"
+#       instance_role: "{{ lookup('aws_ssm', '/JJTech/' + team + '/' + instance_role, region='us-east-2') }}"
+#       wait: true
+#       volumes:
+#         - device_name: /dev/xvda
+#           ebs:
+#             volume_type: gp2
+#             volume_size: "{{ root_volume_size }}"
+#             delete_on_termination: true
+#             encrypted: true
+#       name: "{{ instance_name }}"
+#       tags:
+#         created_by: "{{ created_by }}"
+#         Owner: "{{ Owner }}"
+#         App_Name: "{{ App_Name }}"
+#         Cost_Center: "{{ Cost_Center }}"
+#         Business_Unit: "{{ Business_Unit }}"
+#       user_data: |
+#         #!/bin/bash
+#         yum update -y
+#         yum install httpd -y
+#         service httpd start
+#         chkconfig httpd on
+#         echo "<html><body><h1>Hello JJTech Team</h1></body></html>" > /var/www/html/index.html
+
+#   - name: Output instance details
+#     debug:
+#       msg: "EC2 instance ID is {{ ec2.instance_id }}"
